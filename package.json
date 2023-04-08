@@ -1,0 +1,71 @@
+{
+  "name": "profitsla",
+  "version": "0.1.0",
+  "homepage": "https://bot.profitsla.com",
+  "private": true,
+  "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^36.0.0",
+    "@ckeditor/ckeditor5-react": "^5.0.6",
+    "@fortawesome/free-brands-svg-icons": "^6.2.1",
+    "@fortawesome/free-regular-svg-icons": "^6.2.1",
+    "@fortawesome/free-solid-svg-icons": "^6.2.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@material-tailwind/react": "^1.2.5",
+    "@tailwindcss/line-clamp": "^0.4.2",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "aos": "^2.3.4",
+    "axios": "^1.3.3",
+    "gh-pages": "^4.0.0",
+    "jquery": "^3.6.1",
+    "lottie-react": "^2.3.1",
+    "react": "^18.2.0",
+    "react-collapsible": "^2.10.0",
+    "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
+    "react-responsive-carousel": "^3.2.23",
+    "react-router-dom": "^6.4.3",
+    "react-scripts": "^5.0.1",
+    "react-slick": "^0.29.0",
+    "react-super-responsive-table": "^5.2.1",
+    "react-toastify": "^9.1.1",
+    "react-type-animation": "^2.1.2",
+    "react-vertical-timeline-component": "^3.6.0",
+    "reactjs-popup": "^2.0.5",
+    "slick-carousel": "^1.8.1",
+    "typed": "^4.1.2",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.19",
+    "tailwindcss": "^3.2.4"
+  }
+}

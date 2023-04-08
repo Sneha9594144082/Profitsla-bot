@@ -1,0 +1,33 @@
+@font-face {
+    font-family: montserrat;
+    src: url('../src/fonts/Montserrat-VariableFont_wght.ttf');
+}
+
+.font_secondary {
+    font-family: montserrat;
+}
+
+@font-face {
+    font-family: solway;
+    src: url('../src/fonts/Solway-Medium.ttf');
+}
+
+.font_primary {
+    font-family: solway;
+}
+
+.active-style {
+    color: #FE8067 !important;
+    font-family: solway;
+    font-weight: 400;
+}
+
+.active {
+  color: #FE8067 !important;
+  font-family: solway;
+  font-weight: 400;
+}
+
+.slick-dots li button:before {
+    color: #FE8067 !important;
+}
