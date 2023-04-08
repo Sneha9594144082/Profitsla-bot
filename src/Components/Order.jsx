@@ -2,65 +2,165 @@ import React, { useEffect, useState } from "react";
 
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Space, Table, Tag } from 'antd';
+const columns = [
+  {
+    title: 'Date',
+    dataIndex: 'DateTime',
+    key: 'DateTime',
+  },
+  {
+    title: 'API_Name',
+    dataIndex: 'API_Name',
+    key: 'API_Name',
+  },
+  {
+    title: 'Coin',
+    dataIndex: 'Coin',
+    key: 'Coin',
+  },
+  {
+    title: 'Price',
+    dataIndex: 'Price',
+    key: 'Price',
+  },
+  {
+    title: 'Side',
+    dataIndex: 'Side',
+    key: 'Side',
+  },
+  {
+    title: 'Quantity',
+    dataIndex: 'Quantity',
+    key: 'Quantity',
+  },
+  {
+    title: 'Amount',
+    dataIndex: 'Amount',
+    key: 'Amount',
+  },
+  
+  {
+    title: 'Status',
+    dataIndex: 'Status',
+    key: 'Status',
+  },
+  
+  {
+    title: 'OrderID',
+    dataIndex: 'OrderID',
+    key: 'OrderID',
+  },
+  {
+    title: 'OrderID',
+    dataIndex: 'OrderID',
+    key: 'OrderID',
+  },
 
+//   {
+//     "data": [
+//         {
+//             "DateTime": "2023-04-08",
+//             "API_Name": "test",
+//             "Coin": "OCEANUSDT",
+//             "Price": "0.3495",
+//             "Side": "BUY",
+//             "Quantity": "100",
+//             "Amount": "100",
+//             "Status": "ACTIVE",
+//             "OrderID": "aASF#",
+//             "Commission": "10",
+//             "CommissionAsset": "BNB",
+//             "Fees": "0.1"
+//         }
+//     ]
+// }
+];
+const data = [
+  {
+    key: '1',
+    name: 'John Brown',
+    age: 32,
+    address: 'New York No. 1 Lake Park',
+    tags: ['nice', 'developer'],
+  },
+  {
+    key: '2',
+    name: 'Jim Green',
+    age: 42,
+    address: 'London No. 1 Lake Park',
+    tags: ['loser'],
+  },
+  {
+    key: '3',
+    name: 'Joe Black',
+    age: 32,
+    address: 'Sydney No. 1 Lake Park',
+    tags: ['cool', 'teacher'],
+  },
+];
 function ApplyForm() {
-  const [key, setKey] = useState("");
-  const [secret, setSecret] = useState("");
-  const [amount, setAmount] = useState("");
-  const [coins, setCoins] = useState([]);
-  const [order, setOrder] = useState("");
-  const [volume, setVolume] = useState("");
-  const [tp, setTp] = useState("");
-  const [role, setRole] = useState([]);
+  // const [key, setKey] = useState("");
+  // const [secret, setSecret] = useState("");
+  // const [amount, setAmount] = useState("");
+  // const [coins, setCoins] = useState([]);
+  // const [order, setOrder] = useState("");
+  // const [volume, setVolume] = useState("");
+  // const [tp, setTp] = useState("");
+  // const [role, setRole] = useState([]);
 
-  const [disabled, setDisabled] = useState(false);
-  // const [id, setId] = useState("");
+  // const [disabled, setDisabled] = useState(false);
+  // // const [id, setId] = useState("");
 
-  const handleSubmit = (e) => {
-    const formData = new FormData();
-    e.preventDefault();
-    // setDisabled(true);
-    formData.append("key", key);
-    formData.append("secret", secret);
-    formData.append("email", amount);
-    formData.append("role", coins);
-    formData.append("linkedln", order);
-    formData.append("facebook", volume);
-    formData.append("twitter", tp);
-    // formData.append("twitter", id);
+  // const handleSubmit = (e) => {
+  //   const formData = new FormData();
+  //   e.preventDefault();
+  //   // setDisabled(true);
+  //   formData.append("key", key);
+  //   formData.append("secret", secret);
+  //   formData.append("email", amount);
+  //   formData.append("role", coins);
+  //   formData.append("linkedln", order);
+  //   formData.append("facebook", volume);
+  //   formData.append("twitter", tp);
+  //   // formData.append("twitter", id);
 
-    axios
-      .post("https://api.earnestroi.com/api/resume", formData)
-      .then((res) => {
-        if (res.data.message === "Resume Created successfully") {
-          //   toast.success("Resume Created successfully");
-        }
-      })
-      .catch((err) => {
-        if (err.message !== "") {
-          //   toast.error("Something Went Wrong");
-        }
-      });
-  };
+  //   axios
+  //     .post("https://api.earnestroi.com/api/resume", formData)
+  //     .then((res) => {
+  //       if (res.data.message === "Resume Created successfully") {
+  //         //   toast.success("Resume Created successfully");
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       if (err.message !== "") {
+  //         //   toast.error("Something Went Wrong");
+  //       }
+  //     });
+  // };
 
-  async function getallrole() {
-    try {
-      const res = await axios.get("https://api.earnestroi.com/api/rolejob");
-      setCoins(res.data.data);
-    } catch (err) {
-      console.error(err);
-    }
-  }
+  // async function getallrole() {
+  //   try {
+  //     const res = await axios.get("https://api.earnestroi.com/api/rolejob");
+  //     setCoins(res.data.data);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }
 
-  useEffect(() => {
-    getallrole();
-  }, []);
+  // useEffect(() => {
+  //   getallrole();
+  // }, []);
 
-  console.log(coins);
+  // console.log(coins);
 
   return (
     <>
-      <div className="mt-[3.5rem] lg:mt-[4rem] py-10">
+    <div className="mt-5 mx-5">
+
+     <Table columns={columns} dataSource={data} />
+    </div>
+      {/* <div className="mt-[3.5rem] lg:mt-[4rem] py-10">
         <div className=" w-full lg:w-3/4 px-2 flex items-end justify-end">
           <select
             className="p-2 rounded-lg mr-[1.5rem] border-[1px] border-main text-main bg-[white] focus:outline-0"
@@ -138,7 +238,7 @@ function ApplyForm() {
             </tbody>
           </table>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }
