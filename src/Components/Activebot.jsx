@@ -4,14 +4,17 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 function ApplyForm() {
-  const [key, setKey] = useState("");
-  const [secret, setSecret] = useState("");
-  const [amount, setAmount] = useState("");
-  const [coins, setCoins] = useState([]);
-  const [order, setOrder] = useState("");
-  const [volume, setVolume] = useState("");
-  const [tp, setTp] = useState("");
-  const [disabled, setDisabled] = useState(false);
+  const [apiname, setApiname] = useState('');	
+  const [key, setKey] = useState("");	
+  const [secret, setSecret] = useState("");	
+  const [amount, setAmount] = useState("");	
+  const [coins, setCoins] = useState([]);	
+  const [order, setOrder] = useState("");	
+  const [volume, setVolume] = useState("");	
+  const [tp, setTp] = useState("");	
+  const [disabled, setDisabled] = useState(false);	
+  const [coinnn, setCoinnn] = useState('');	
+  const [user, setUser] = useState(465)
   const [userid, setUserid] = useState([]);
 
 
@@ -19,30 +22,61 @@ function ApplyForm() {
   
 
   const handleSubmit = (e) => {
-    const formData = new FormData();
     e.preventDefault();
+    const formData = new FormData();
     // setDisabled(true);
-    formData.append("key", key);
-    formData.append("secret", secret); 
-    formData.append("email", amount);
-    formData.append("role", coins);
-    formData.append("linkedln", order);
-    formData.append("facebook", volume);
-    formData.append("twitter", tp);
+    formData.append('api_name',apiname);	
+    formData.append("api_key", key);	
+    formData.append("api_secret", secret); 	
+    formData.append("amount", amount);	
+    formData.append("coin", coinnn);	
+    formData.append("su_or_no", order);	
+    formData.append("su_or_vol", volume);	
+    formData.append("tp", tp);	
+    formData.append("user", user);
     // formData.append("twitter", id);
 
-    axios
-      .post("https://api.earnestroi.com/api/resume", formData)
-      .then((res) => {
-        if (res.data.message === "Resume Created successfully") {
-        //   toast.success("Resume Created successfully");
-        }
-      })
-      .catch((err) => {
-        if (err.message !== "") {
-        //   toast.error("Something Went Wrong");
-        }
-      });
+    // axios
+    //   .post("https://feeds.stashack.cloud:3000/livebot", formData)
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     if (res.data.data === "Bot executed successfully!") {
+    //       alert(res.data.data );
+    //     }
+         
+    //   })
+    //   .catch((errors) => {
+    //     // if (errors.message !== "") {
+    //     //   alert(errors.on_field_errors);
+    //     // }
+    //     console.log(errors.errors.non_field_errors
+    //       )
+    //   });
+
+    axios({
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      url: 'https://feeds.stashack.cloud:3000/livebot',
+      data: formData,
+    }).then(async function (response) {
+      console.log(response);
+      const res = await response.data;
+      console.log('res')
+      console.log(res)
+      if(res.data)
+      {
+        alert(res.data);
+      }else if(res.errors)
+      {
+        alert(res.errors.non_field_errors);
+      }
+      // localStorage.setItem('userID',res.UserID)
+        // window.location.href = '/active'
+    }).catch((err) => {
+      toast(err.response.data.message)
+      getallrole()
+    })
+
   };
 
   // async function getallrole() {
@@ -75,8 +109,30 @@ function ApplyForm() {
          });
    };
 
+   const getallcoin = (e) => {
+    const formData = new FormData();
+    
+      axios
+        .post("https://feeds.stashack.cloud:3000/get_coins")
+        .then((res) => {
+         console.log(res.data.data);
+         setCoins(res.data.data);
+          if (res.data.message === " Created successfully") {
+              toast.success(" Created successfully");
+          }
+        })
+        .catch((err) => {
+          if (err.message !== "") {
+            //   toast.error("Something Went Wrong");
+          }
+        });
+  };
+
+  
+
   useEffect(() => {
     getallrole();
+    getallcoin();
   }, []);
 
 
@@ -116,8 +172,8 @@ function ApplyForm() {
                 id="name"
                 type="text"
                 placeholder="Enter your api name"
-                value={secret}
-                onChange={(e) => setSecret(e.target.value)}
+                value={apiname}
+                onChange={(e) => setApiname(e.target.value)}
               />
             </div>
             <div className="w-full lg:w-2/2 px-2">
@@ -164,7 +220,7 @@ function ApplyForm() {
               <input
                 className="p-2 rounded-lg border-[1px] w-full border-main text-main bg-[white] focus:outline-0"
                 id="email"
-                type="email"
+                type="number"
                 placeholder="Enter your amount"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
@@ -183,12 +239,14 @@ function ApplyForm() {
                 className="p-2 rounded-lg border-[1px] w-full border-main text-main bg-[white] focus:outline-0"
                 id="option"
                 name="option"
+                value={ coinnn }	
+                onChange={ e => setCoinnn( e.target.value ) }
               >
                 <option value="">--Select Coins--</option>
 
                 {coins.map((r) => (
                   <option key={r.id} value={r.name}>
-                    {r.name}
+                    {r.Coin}
                   </option>
                 ))}
               </select>
@@ -203,7 +261,7 @@ function ApplyForm() {
               <input
                 className="p-2 rounded-lg border-[1px] w-full border-main text-main bg-[white] focus:outline-0"
                 id="email"
-                type="email"
+                type="number"
                 placeholder="Enter your subsequent order"
                 value={order}
                 onChange={(e) => setOrder(e.target.value)}
@@ -222,7 +280,7 @@ function ApplyForm() {
               <input
                 className="p-2 rounded-lg border-[1px] w-full border-main text-main bg-[white] focus:outline-0"
                 id="email"
-                type="email"
+                type="number"
                 placeholder="Enter your subsequent order volume"
                 value={volume}
                 onChange={(e) => setVolume(e.target.value)}
@@ -233,12 +291,12 @@ function ApplyForm() {
                 className="block text-gray-700 font-bold mb-2 "
                 htmlFor="email"
               >
-                TP
+                TP (%)
               </label>
               <input
                 className="p-2 rounded-lg border-[1px] w-full border-main text-main bg-[white] focus:outline-0"
                 id="email"
-                type="email"
+                type="number"
                 placeholder="Enter your tp"
                 value={tp}
                 onChange={(e) => setTp(e.target.value)}
