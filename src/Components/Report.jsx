@@ -2,38 +2,24 @@ import React, { useEffect, useState } from "react";
 
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Card } from "antd";
 
 function ApplyForm() {
-  const [key, setKey] = useState("");
-  const [secret, setSecret] = useState("");
-  const [amount, setAmount] = useState("");
-  const [coins, setCoins] = useState([]);
-  const [order, setOrder] = useState("");
-  const [volume, setVolume] = useState("");
-  const [tp, setTp] = useState("");
-  const [role, setRole] = useState([]);
+  const [userid, setUserid] = useState([]);
+  
 
-  const [disabled, setDisabled] = useState(false);
-  // const [id, setId] = useState("");
 
-  const handleSubmit = (e) => {
+  const getallrole = (e) => {
     const formData = new FormData();
-    e.preventDefault();
-    // setDisabled(true);
-    formData.append("key", key);
-    formData.append("secret", secret);
-    formData.append("email", amount);
-    formData.append("role", coins);
-    formData.append("linkedln", order);
-    formData.append("facebook", volume);
-    formData.append("twitter", tp);
-    // formData.append("twitter", id);
 
+    formData.append("UserID", userid);
     axios
-      .post("https://api.earnestroi.com/api/resume", formData)
+      .post("https://feeds.stashack.cloud:3000/report", formData)
       .then((res) => {
-        if (res.data.message === "Resume Created successfully") {
-          //   toast.success("Resume Created successfully");
+        console.log(res.data.data);
+        setUserid(res.data.data);
+        if (res.data.message === " Created successfully") {
+          toast.success(" Created successfully");
         }
       })
       .catch((err) => {
@@ -43,47 +29,39 @@ function ApplyForm() {
       });
   };
 
-  async function getallrole() {
-    try {
-      const res = await axios.get("https://api.earnestroi.com/api/rolejob");
-      setCoins(res.data.data);
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
   useEffect(() => {
     getallrole();
   }, []);
-
-  console.log(coins);
 
   return (
     <>
       <div className="mt-[3.5rem] lg:mt-[4rem] py-10">
         <div class="  grid grid-cols-3 gap-4">
           <div class="col-span-3 sm:col-span-2 md:col-span-1">
-            <div class="w-full lg:w-2/4 mx-auto bg-white shadow-md shadow-second rounded px-8 pt-6 pb-8 mb-4 border-b-2 border-second">
-              <div class="p-4">
-                <h2 class="text-lg font-medium mb-2">Coin</h2>
-                <p class="text-gray-500">ID: </p>
-                <p class="text-gray-500">Start Date: </p>
-                <p class="text-gray-500">Invested: </p>
-                <p class="text-gray-500">Trade Type: </p>
-                <p class="text-gray-500">Balance: </p>
-                <p class="text-gray-500">Profit($): </p>
-                <p class="text-gray-500">Brokerage: </p>
-                <p class="text-gray-500">Profile(%): </p>
-                <p class="text-gray-500">Total Trades</p>
-                <p class="text-gray-500">Winning Trades: </p>
-                <p class="text-gray-500">Losing Trades: </p>
-                <p class="text-gray-500">Hit Rate: </p>
-              </div>
-            </div>
+            {userid?.map((item) => (
+              <Card class="w-full lg:w-2/4 mx-auto bg-white shadow-md shadow-second rounded px-8 pt-6 pb-8 mb-4 border-b-2 border-second">
+                <div class="p-4" key={item}>
+                  <h2 class="text-lg font-medium mb-2">Coin</h2>
+                  <p class="text-gray-500">ID: {item.Coin}</p>
+                  <p class="text-gray-500">Start Date: {item.StartDate}</p>
+                  <p class="text-gray-500">Invested: {item.Invested}</p>
+                  <p class="text-gray-500">Trade Type: {item.TradeType}</p>
+                  <p class="text-gray-500">Balance: {item.Balance}</p>
+                  <p class="text-gray-500">Profit($): {item.TotalProfit}</p>
+                  <p class="text-gray-500">Brokerage: {item.TotalBrokerage}</p>
+                  <p class="text-gray-500">Profile(%): {item.TotalProfit}</p>
+                  <p class="text-gray-500">Total Trades: {item.TotalTrades}</p>
+                  <p class="text-gray-500">
+                    Winning Trades: {item.WinningTrades}
+                  </p>
+                  <p class="text-gray-500">
+                    Losing Trades: {item.LosingTrades}
+                  </p>
+                  <p class="text-gray-500">Hit Rate: {item.HitRate}</p>
+                </div>
+              </Card>
+            ))}
           </div>
-          
-           
-          
         </div>
       </div>
     </>

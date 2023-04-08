@@ -64,8 +64,8 @@ function ApplyForm() {
          .then((res) => {
           console.log(res.data.data);
           setUserid(res.data.data);
-           if (res.data.message === "Resume Created successfully") {
-               toast.success("Resume Created successfully");
+           if (res.data.message === " Created successfully") {
+               toast.success(" Created successfully");
            }
          })
          .catch((err) => {
@@ -79,7 +79,6 @@ function ApplyForm() {
     getallrole();
   }, []);
 
-  console.log(coins);
 
   return (
     <>
