@@ -12,6 +12,9 @@ function ApplyForm() {
   const [volume, setVolume] = useState("");
   const [tp, setTp] = useState("");
   const [disabled, setDisabled] = useState(false);
+  const [userid, setUserid] = useState([]);
+
+
   // const [id, setId] = useState("");
   
 
@@ -42,14 +45,35 @@ function ApplyForm() {
       });
   };
 
-  async function getallrole() {
-    try {
-      const res = await axios.get("https://api.earnestroi.com/api/rolejob");
-      setCoins(res.data.data);
-    } catch (err) {
-      console.error(err);
-    }
-  }
+  // async function getallrole() {
+  //   try {
+  //     const res = await axios.get("https://feeds.stashack.cloud:3000/listbot");
+  //     setCoins(res.data.data);
+      
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }
+
+   const getallrole = (e) => {
+     const formData = new FormData();
+     
+     formData.append("UserID", userid);
+       axios
+         .post("https://feeds.stashack.cloud:3000/listbot", formData)
+         .then((res) => {
+          console.log(res.data.data);
+          setUserid(res.data.data);
+           if (res.data.message === "Resume Created successfully") {
+               toast.success("Resume Created successfully");
+           }
+         })
+         .catch((err) => {
+           if (err.message !== "") {
+             //   toast.error("Something Went Wrong");
+           }
+         });
+   };
 
   useEffect(() => {
     getallrole();
@@ -243,46 +267,39 @@ function ApplyForm() {
                 <th class="px-4 py-2 text-gray-600 font-bold">Amount</th>
                 <th class="px-4 py-2 text-gray-600 font-bold">Coins</th>
                 <th class="px-4 py-2 text-gray-600 font-bold">
-                  No.of Sub Order
+                  {" "}
+                  No.of Sub Order{" "}
                 </th>
                 <th class="px-4 py-2 text-gray-600 font-bold">
-                  Sub Order Volume
+                  {" "}
+                  Sub Order Volume{" "}
                 </th>
                 <th class="px-4 py-2 text-gray-600 font-bold">Tp</th>
                 <th class="px-4 py-2 text-gray-600 font-bold">Status</th>
               </tr>
             </thead>
             <tbody>
-              <tr class="border-b border-gray-400">
-                <td class="px-4 py-2 text-gray-600 font-semibold">1</td>
-                <td class="px-4 py-2 text-gray-600 ">2023-04-07</td>
-                <td class="px-4 py-2 text-gray-600">Groceries</td>
-                <td class="px-4 py-2 text-gray-600">Groceries</td>
-                <td class="px-4 py-2 text-gray-600">Groceries</td>
-                <td class="px-4 py-2 text-gray-600">Groceries</td>
-                <td class="px-4 py-2 text-gray-600">Groceries</td>
-                <td class="px-4 py-2 text-gray-600">Groceries</td>
-                <td class="px-4 py-2 text-gray-600">Groceries</td>
-                <td class="px-4 py-2 text-right text-red-600 font-semibold">
-                  - $50.00
-                </td>
-              </tr>
-              <tr class="border-b border-gray-400">
-                <td class="px-4 py-2 text-gray-600 font-semibold">2</td>
-                <td class="px-4 py-2 text-gray-600">2023-04-06</td>
-                <td class="px-4 py-2 text-gray-600">Gas</td>
-                <td class="px-4 py-2 text-right text-red-600 font-semibold">
-                  - $30.00
-                </td>
-              </tr>
-              <tr class="border-b border-gray-400">
-                <td class="px-4 py-2 text-gray-600 font-semibold">3</td>
-                <td class="px-4 py-2 text-gray-600">2023-04-05</td>
-                <td class="px-4 py-2 text-gray-600">Paycheck</td>
-                <td class="px-4 py-2 text-right text-green-600 font-semibold">
-                  $1,000.00
-                </td>
-              </tr>
+              {userid.map((item) => (
+                <tr class="border-b border-gray-400" key={item}>
+                 
+                  <td class="px-4 py-2 text-gray-600 ">{item.DateTime}</td>
+                  <td class="px-4 py-2 text-gray-600">{item.API_Name}</td>
+                  <td class="px-4 py-2 text-gray-600">{item.API_KEY}</td>
+                  <td class="px-4 py-2 text-gray-600">{item.API_SECRET}</td>
+                  <td class="px-4 py-2 text-gray-600">{item.Amount}</td>
+                  <td class="px-4 py-2 text-gray-600">{item.COIN}</td>
+                  <td class="px-4 py-2 text-gray-600">
+                    {item.SubsequentOrderCount}
+                  </td>
+                  <td class="px-4 py-2 text-gray-600">
+                    {item.SubsequentOrderVolume}
+                  </td>
+                  <td class="px-4 py-2 text-right text-red-600 font-semibold">
+                    {item.TakeProfit}
+                  </td>
+                  <td class="px-4 py-2 text-gray-600">{item.Status}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
