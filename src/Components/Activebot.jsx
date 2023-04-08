@@ -29,27 +29,54 @@ function ApplyForm() {
     formData.append("api_key", key);	
     formData.append("api_secret", secret); 	
     formData.append("amount", amount);	
-    formData.append("coin", coins);	
+    formData.append("coin", coinnn);	
     formData.append("su_or_no", order);	
     formData.append("su_or_vol", volume);	
     formData.append("tp", tp);	
     formData.append("user", user);
     // formData.append("twitter", id);
-    console.log(coins);
 
-    axios
-      .post("https://feeds.stashack.cloud:3000/livebot", formData)
-      .then((res) => {
-        console.log(res.data.data);
-        if (res.data.message === "Bot executed successfully!") {
-          toast.success("Bot executed successfully!");
-        }
-      })
-      .catch((err) => {
-        if (err.message !== "") {
-          toast.error("Something Went Wrong");
-        }
-      });
+    // axios
+    //   .post("https://feeds.stashack.cloud:3000/livebot", formData)
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     if (res.data.data === "Bot executed successfully!") {
+    //       alert(res.data.data );
+    //     }
+         
+    //   })
+    //   .catch((errors) => {
+    //     // if (errors.message !== "") {
+    //     //   alert(errors.on_field_errors);
+    //     // }
+    //     console.log(errors.errors.non_field_errors
+    //       )
+    //   });
+
+    axios({
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      url: 'https://feeds.stashack.cloud:3000/livebot',
+      data: formData,
+    }).then(async function (response) {
+      console.log(response);
+      const res = await response.data;
+      console.log('res')
+      console.log(res)
+      if(res.data)
+      {
+        alert(res.data);
+      }else if(res.errors)
+      {
+        alert(res.errors.non_field_errors);
+      }
+      // localStorage.setItem('userID',res.UserID)
+        // window.location.href = '/active'
+    }).catch((err) => {
+      toast(err.response.data.message)
+      getallrole()
+    })
+
   };
 
   // async function getallrole() {
