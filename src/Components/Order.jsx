@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Space, Table, Tag } from 'antd';
+import { Button, Space, Table, Tag } from 'antd';
+import { Link } from "react-router-dom";
+
+
+
 const columns = [
   {
     title: 'Date',
@@ -39,66 +43,41 @@ const columns = [
     dataIndex: 'Amount',
     key: 'Amount',
   },
-  
+
   {
     title: 'Status',
     dataIndex: 'Status',
     key: 'Status',
   },
-  
-  {
-    title: 'OrderID',
-    dataIndex: 'OrderID',
-    key: 'OrderID',
-  },
-  {
-    title: 'OrderID',
-    dataIndex: 'OrderID',
-    key: 'OrderID',
-  },
 
-//   {
-//     "data": [
-//         {
-//             "DateTime": "2023-04-08",
-//             "API_Name": "test",
-//             "Coin": "OCEANUSDT",
-//             "Price": "0.3495",
-//             "Side": "BUY",
-//             "Quantity": "100",
-//             "Amount": "100",
-//             "Status": "ACTIVE",
-//             "OrderID": "aASF#",
-//             "Commission": "10",
-//             "CommissionAsset": "BNB",
-//             "Fees": "0.1"
-//         }
-//     ]
-// }
-];
-const data = [
   {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
+    title: 'OrderID',
+    dataIndex: 'OrderID',
+    key: 'OrderID',
   },
   {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
+    title: 'Commission',
+    dataIndex: 'Commission',
+    key: 'Commission',
   },
   {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
+    title: 'CommissionAsset',
+    dataIndex: 'CommissionAsset',
+    key: 'CommissionAsset',
+  },
+  {
+    title: 'Fees',
+    dataIndex: 'Fees',
+    key: 'Fees',
   },
 ];
+
+
+
+
+
+
+
 function ApplyForm() {
   // const [key, setKey] = useState("");
   // const [secret, setSecret] = useState("");
@@ -154,12 +133,73 @@ function ApplyForm() {
 
   // console.log(coins);
 
+const [data,setdata]=useState([])
+  let userID = localStorage.getItem('userID')
+  console.log(localStorage.getItem('userID'))
+
+  const getlivebot = () => {
+    const postdata = { "UserID": userID }
+    console.log('Success:', postdata);
+
+    axios({
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      url: 'https://feeds.stashack.cloud:3000/orderhistory',
+      data: postdata,
+    }).then(async function (response) {
+      console.log(response);
+      const res = await response.data.data;
+      console.log('res')
+      console.log(res)
+      setdata(res)
+    }).catch((err) => {
+      toast(err.response.data.message)
+    })
+  }
+
+  useEffect(() => {
+    getlivebot()
+  }, [])
+
+  const dataSource = [];
+  for (let i = 0; i < data; ++i) {
+    dataSource.push({
+      key: i,
+      DateTime: data.DateTime,
+      API_Name: data.API_Name,
+      Coin: data.Coin,
+      Price: data.Price,
+      Side: data.Side,
+      Quantity: data.Quantity,
+      Amount: data.Amount,
+      Status: data.Status,
+      OrderID: data.OrderID,
+      Commission: data.Commission,
+      CommissionAsset: data.CommissionAsset,
+      Fees: data.Fees
+    })
+  }
+
+
+
   return (
     <>
-    <div className="mt-5 mx-5">
+    <div className="mt-20">
+      <div className="flex justify-center">
+      <Link
+            to="/report"
+            className="container px-8 py-2 rounded-lg border-2 w-max cursor-pointer font_primary  hover:border-second font_secondary text-second hover:text-second bg-main hover:bg-[white] focus:outline-0 text-right"
+          >
+            Report
+          </Link>
+      </div>
+   
+      <div className="mt-5 mx-5">
 
-     <Table columns={columns} dataSource={data} />
+        <Table columns={columns} size="small" dataSource={data} />
+      </div>
     </div>
+    
       {/* <div className="mt-[3.5rem] lg:mt-[4rem] py-10">
         <div className=" w-full lg:w-3/4 px-2 flex items-end justify-end">
           <select
