@@ -65,7 +65,7 @@ const onFinish = (values) => {
     console.log('res')
     console.log(res)
     localStorage.setItem('userID',res.UserID)
-      // window.location.href = '/active'
+      window.location.href = '/active'
   }).catch((err) => {
     toast(err.response.data.message)
   })
