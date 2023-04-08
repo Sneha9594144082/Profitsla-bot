@@ -2,6 +2,7 @@
 
 
 import React, { useEffect, useState } from "react";
+import { Button, Checkbox, Form, Input } from 'antd';
 
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -10,7 +11,6 @@ function ApplyForm() {
   
   const [coins, setCoins] = useState([]);
   
-  // const [id, setId] = useState("");
 
 //   const handleSubmit = (e) => {
 //     const formData = new FormData();
@@ -47,48 +47,96 @@ function ApplyForm() {
 //     getallrole();
 //   }, []);
 
-  console.log(coins);
 
+
+
+const onFinish = (values) => {
+  const postdata = values
+  console.log('Success:', postdata);
+
+  axios({
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    url: 'https://feeds.stashack.cloud:3000/login',
+    data: postdata,
+  }).then(async function (response) {
+    console.log(response);
+    const res = await response.data;
+    console.log('res')
+    console.log(res)
+    localStorage.setItem('userID',res.UserID)
+      // window.location.href = '/active'
+  }).catch((err) => {
+    toast(err.response.data.message)
+  })
+}
+const onFinishFailed = (errorInfo) => {
+  console.log('Failed:', errorInfo);
+};
   return (
     <>
-      <div className="flex justify-center items-center h-screen ">
-        <form className="w-full lg:w-1/4 mx-auto bg-white shadow-md shadow-second rounded px-8 pt-6 pb-8 mb-4 border-b-2 border-second">
-          <h1 className="text-2xl font-bold mb-4 text-center">Login</h1>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 font-medium mb-2"
-              htmlFor="username"
-            >
-              Username
-            </label>
-            <input
-              className="border border-gray-400 p-2 w-full rounded"
-              type="text"
-              name="username"
-              id="username"
-              placeholder="Enter your username"
-            />
-          </div>
-          <div className="mb-6">
-            <label
-              className="block text-gray-700 font-medium mb-2"
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <input
-              className="border border-gray-400 p-2 w-full rounded"
-              type="password"
-              name="password"
-              id="password"
-              placeholder="Enter your password"
-            />
-          </div>
-          <button className="px-8 py-2 rounded-lg border-2 w-max cursor-pointer font_primary  hover:border-second font_secondary text-second hover:text-second bg-main hover:bg-[white] focus:outline-0 text-center">
-            Login
-          </button>
-        </form>
+      
+      <div className="mt-24">
+      <Form
+      className="w-full lg:w-1/4 mx-auto bg-white shadow-md shadow-second rounded px-8 pt-6 pb-8 mb-4 border-b-2 border-second"
+    name="basic"
+    labelCol={{
+      span: 8,
+    }}
+    wrapperCol={{
+      span: 16,
+    }}
+    style={{
+      maxWidth: 600,
+    }}
+    initialValues={{
+      remember: true,
+    }}
+    onFinish={onFinish}
+    onFinishFailed={onFinishFailed}
+    autoComplete="off"
+  >
+    <Form.Item
+      label="email"
+      name="email"
+      rules={[
+        {
+          required: true,
+          message: 'Please input your email!',
+        },
+      ]}
+    >
+      <Input />
+    </Form.Item>
+
+    <Form.Item
+      label="password"
+      name="password"
+      rules={[
+        {
+          required: true,
+          message: 'Please input your password!',
+        },
+      ]}
+    >
+      <Input.Password />
+    </Form.Item>
+
+   
+
+    <Form.Item
+      wrapperCol={{
+        offset: 8,
+        span: 16,
+      }}
+    >
+      <Button className="bg-[#FE8067]" htmlType="submit">
+        Submit
+      </Button>
+    </Form.Item>
+  </Form>
       </div>
+
     </>
   );
 }
